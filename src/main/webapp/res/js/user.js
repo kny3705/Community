@@ -1,146 +1,133 @@
+init()
 
-function chkItem(ele, nm) {
-	if(!ele.value) {
-		alert(`${nm}을(를) 작성해 주세요.`);
-		ele.focus();
-		return true;
+function init() {
+	var checkIdBtn = document.querySelector('#chkIdBtn')
+	
+	if(checkIdBtn) {
+		checkIdBtn.addEventListener('click', checkId)
+	}
+	
+	var joinBtn = document.querySelector('#joinBtn')
+	if(joinBtn) joinBtn.addEventListener('click', join)
+	
+	var loginBtn = document.querySelector('#loginBtn')
+	if(loginBtn) loginBtn.addEventListener('click', login)
+}
+
+function checkEmpty(el, field) {
+	if(el.value) return false
+	
+	alert(`${field}을(를) 입력해 주세요.`)
+	el.focus()
+	return true
+}
+
+function checkId() {
+	console.log(".1111")
+	var form = document.querySelector('#form')
+	var { idField } = form
+	
+	if(checkEmpty(idField, '아이디')) return
+	
+	ajax()
+	
+	function ajax() {
+		fetch(`/user/chkId/${idField.value}`)
+			.then(res => res.json())
+			.then(json => proc(json))
+	}
+	
+	function proc(json) {
+		var msgField = form.querySelector('#idChkMsg')
+		console.log(json.result)
+		if(json.result === 1) {
+			msgField.innerText = '중복된 아이디가 있습니다.';
+		} else {
+			msgField.innerText = '사용할 수 있는 아이디 입니다.'
+		}
 	}
 }
 
-var joinBtnElem = document.querySelector('#joinBtn')
-if(joinBtnElem) {
-	var frmElem = document.querySelector('#frm')
-	var userIdElem = frmElem.userId
-	var userPwElem = frmElem.userPw
-	var userPwReElem = frmElem.userPwRe
-	var nmElem = frmElem.nm
-	var genderElem = frmElem.gender
-	
-	function eleChk() {
-		if(chkItem(userIdElem, 'Id') || chkItem(userPwElem, 'Pw') || chkItem(nmElem, '이름')) {
-			return true;
-		} else if(userPwElem.value !== userPwReElem.value) {
-			alert('비밀빈호를 확인해 주세요.');
-			userPwElem.focus();
-			return true;
-		}
-		return false
+function getPostInit(param) {
+	return {
+		method: 'post',
+		headers: { 'content-type': 'application/json' },
+		body: JSON.stringify(param)
 	}
+}
+
+function join() {
+	var form = document.querySelector('#form')
+	
+	var { idField, pwField, pwCheckField, nmField, genderField } = form
+	
+	if (checkEmpty(idField, '아이디')
+		|| checkEmpty(pwField, '비밀번호')
+		|| checkEmpty(nmField, '이름')) return
+	
+	if(pwField.value !== pwCheckField.value) {
+		alert('비밀번호를 확인해 주세요.')
+		pwField.focus()
+		return
+	}
+	
+	ajax()
 	
 	function ajax() {
-
 		var param = {
-			userId: userIdElem.value,
-			userPw: userPwElem.value,
-			nm: nmElem.value,
-			gender: genderElem.value
+			userId: idField.value,
+			userPw: pwField.value,
+			nm: nmField.value,
+			gender: genderField.value
 		}
-		fetch('/user/join', {
-			method: 'post',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify(param)
-		}).then(function(res) {
-			return res.json()
-		}).then(function(myJson){
-			console.log(myJson)
-			proc(myJson)
-		})
+		
+		fetch('/user/join', getPostInit(param))
+			.then(res => res.json())
+			.then(json => proc(json))
 	}
-	function proc(myJson) {
-		if(myJson.result === 0) {
+	
+	/* processing */
+	function proc(json) {
+		if(json.result === 0) {
 			alert('회원가입에 실패 하였습니다.')
 			return
 		}
-		//회원가입 성공
 		alert('회원가입을 축하 합니다.')
 		location.href = "/user/login"
 	}
-	joinBtnElem.addEventListener('click', function() {
-		if(eleChk()) {return}
-		ajax()
-	})
 }
+
+function login() {
+	var form = document.querySelector('#form')
 	
-var loginBtnElem = document.querySelector('#loginBtn')
-if(loginBtnElem) {
-	var frmElem = document.querySelector('#frm')
-	var userIdElem = frmElem.userId
-	var userPwElem = frmElem.userPw
-	var errMsgElem = document.querySelector('#errMsg')
+	var { idField, pwField } = form
+	
+	if(checkEmpty(idField, '아이디') || checkEmpty(pwField, '비밀번호')) return
+	
+	ajax()
+	
 	function ajax() {
-		if(userIdElem.value === '') {
-			alert('아이디를 입력해 주세요.')
-			return
-		} else if(userPwElem.value === '') {
-			alert('비밀번호를 입력해 주세요.')
-			return
-		}
-		var param = {
-			userId: userIdElem.value,
-			userPw: userPwElem.value
-		}	//값을 객체로 만들어 전달
-		fetch('/user/login',{
-			method: 'post',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify(param)
-		}).then(function(res) {
-			return res.json()
-		}).then(function(myJson){
-			/*console.log(myJson)*/
-			proc(myJson)
-		})
+		var param = { 
+			userId: idField.value,
+			userPw: pwField.value
+			}
+		
+		fetch('/user/login', getPostInit(param))
+			.then(res => res.json())
+			.then(json => proc(json))
 	}
 	
-	function proc(myJson) {
-		switch(myJson.result) {
+	function proc(json) {
+		switch(json.result) {
 			case 1:
-				location.href="/board/home"
+				location.href = "/board/home"
 				return
 			case 2:
-				alert('아이디를 확인해 주세요.')
+				alert('가입되지 않은 아이디 입니다.')
 				return
 			case 3:
 				alert('비밀번호를 확인해 주세요.')
 				return
 		}
 	}
-	
-	loginBtnElem.addEventListener('click', ajax)
 }
-
-//아이디 체크
-var chkIdBtnElem = document.querySelector('#chkIdBtn')
-if(chkIdBtnElem) {
-  function ajax () {
-	var frmElem = document.querySelector('#frm')
-	var userIdElem = frmElem.userId;
-	var userIdValue = userIdElem.value
-	var idChkMsgElem = frmElem.querySelector('#idChkMsg')
-	
-	if(!userIdValue) {
-		alert('아이디를 입력해 주세요.')
-		userIdElem.focus()
-		return
-	}
-	
-	fetch(`/user/chkId/${userIdValue}`)	/* 자바스크립트에서의 통신 get방식 */
-		.then(function (res) {
-			return res.json()
-    })
-		.then(function(myjson) {
-			console.log(myjson)
-			if(myjson.result === 1) {
-				idChkMsgElem.innerText = '중복된 아이디가 있습니다.';
-			} else {
-				idChkMsgElem.innerText = '사용할 수 있는 아이디 입니다.';
-			}
-		})
-  }
-	
-  chkIdBtnElem.addEventListener('click', ajax)
-}
-
