@@ -18,3 +18,36 @@ if(delBtn) {
 		})
 	}
 }
+
+// 댓글
+var cmtForm = document.querySelector('#cmtForm')
+if(cmtForm) {
+	var ctnt = cmtForm.ctnt
+	var btn = cmtForm.btn
+	btn.addEventListener('click', ajax)
+	
+	function ajax() {
+		var ctntVal = ctnt.value
+		if(ctntVal === '') {
+			alert('댓글 내용이 없습니다.')
+			return
+		}
+		
+		var param = {
+			boardPk: data.dataset.pk,
+			ctnt: ctntVal
+		}
+		
+		fetch('/cmt', {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify(param)
+		}).then(res => {
+			res.json().then(json => {
+				console.log(json)
+			})
+		})
+	}
+}

@@ -17,9 +17,9 @@
 		from t_board A
 		inner join t_user B
 		on A.userPk = B.userPk
-		where category = #{category}
-		and isDel = 0
-		order by boardPk desc;
+		where A.category = #{category}
+		and A.isDel = 0
+		order by A.boardPk desc;
 	</select>
 	<select id="selBoard" resultType="BoardDomain">
 		select 
@@ -28,7 +28,7 @@
 		from t_board A
 		inner join t_user B
 		on A.userPk = B.userPk
-		where boardPk = #{boardPk}
+		where A.boardPk = #{boardPk}
 	</select>
 	<update id="updBoard">
 		update t_board

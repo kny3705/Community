@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.community.cmt.CmtMapper">
+	<insert id="insCmt">
+		insert into t_board_cmt
+		(boardPk, seq, writerPk, ctnt)
+		select #{boardPk}, ifnull(max(seq), 0) + 1, #{writerPk}, #{ctnt}
+		from t_board_cmt
+		where boardPk = #{boardPk}
+	</insert>
+</mapper>

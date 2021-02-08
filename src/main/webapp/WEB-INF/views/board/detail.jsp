@@ -4,6 +4,7 @@
 <div>
 	<a href="/board/list?category=${requestScope.data.category}">리스트로 돌아가기</a>
 </div>
+
 <c:if test="${sessionScope.loginUser.userPk == requestScope.data.userPk}">
 	<div>
 		<a href="/board/edit?boardPk=${requestScope.data.boardPk}&category=${requestScope.data.category}">
@@ -12,6 +13,7 @@
 		<button id="delBtn">삭제</button>
 	</div>
 </c:if>
+
 <div id="data" data-pk="${requestScope.data.boardPk}" data-category="${requestScope.data.category}">
 	<div>글번호 : ${requestScope.data.seq}</div>
 	<div>조회수 : ${requestScope.data.hits}</div>
@@ -20,5 +22,13 @@
 	<div>작성자 : <c:out value="${requestScope.data.writerNm}"/></div>
 	<div><c:out value="${requestScope.data.ctnt}"/></div>
 </div>
+
+<c:if test="${sessionScope.loginUser != null}">
+	<h4>댓글쓰기</h4>
+	<form id="cmtForm">
+		<input type="text" name="ctnt">
+		<input type="button" name="btn" value="댓글등록">
+	</form>
+</c:if>
 
 <script src="/res/js/board/detail.js"></script>
