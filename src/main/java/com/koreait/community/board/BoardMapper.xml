@@ -12,7 +12,7 @@
 	</insert>
 	<select id="selBoardList" resultType="BoardDomain">
 		select 
-			A.userPk, A.seq, A.title, A.hits
+			A.boardPk, A.userPk, A.seq, A.title, A.hits
 			, A.regDt, B.nm as writerNm
 		from t_board A
 		inner join t_user B
@@ -21,4 +21,39 @@
 		and isDel = 0
 		order by boardPk desc;
 	</select>
+	<select id="selBoard" resultType="BoardDomain">
+		select 
+			A.boardPk, A.userPk, A.category, A.seq, A.title, A.ctnt, A.hits
+			, A.regDt, B.nm as writerNm
+		from t_board A
+		inner join t_user B
+		on A.userPk = B.userPk
+		where boardPk = #{boardPk}
+	</select>
+	<update id="updBoard">
+		update t_board
+		<set>
+			<choose>
+				<when test="hits == 1">
+					hits = hits + 1
+				</when>
+				<otherwise>
+					<if test="title != null and title != ''">
+						title = #{title},
+					</if>
+					<if test="ctnt != null and ctnt !=''">
+						ctnt = #{ctnt},
+					</if>
+					<if test="isDel == 1">
+						isDel = 1,
+					</if>
+					modDt = now()
+				</otherwise>
+			</choose>
+		</set>
+		where boardPk = #{boardPk}
+		<if test="userPk > 0">
+			and userPk = #{userPk}
+		</if>
+	</update>
 </mapper>

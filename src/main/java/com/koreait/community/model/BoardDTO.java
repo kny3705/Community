@@ -1,6 +1,7 @@
 package com.koreait.community.model;
 
 public class BoardDTO {
+	private int boardPk;
 	private int category;
 	private int page;
 	private int sIdx;
@@ -36,5 +37,11 @@ public class BoardDTO {
 	}
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+	public int getBoardPk() {
+		return boardPk;
+	}
+	public void setBoardPk(int boardPk) {
+		this.boardPk = boardPk;
 	}
 }

@@ -12,4 +12,7 @@ import com.koreait.community.model.BoardEntity;
 public interface BoardMapper {
 	int insBoard(BoardEntity p);
 	List<BoardDomain> selBoardList(BoardDTO p);
+	BoardDomain selBoard(BoardDTO p);
+	BoardDomain selBoardWithHits(BoardDTO p);
+	int updBoard(BoardEntity p);
 }
