@@ -62,4 +62,17 @@ public class BoardController {
 		rVal.put(Const.KEY_DATA, service.delBoard(p));
 		return rVal;
 	}
+	
+	@GetMapping("/edit")
+	public String edit(BoardDTO p, Model model) {
+		model.addAttribute(Const.KEY_DATA, service.selBoard(p));
+		return "board/writeEdit";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(BoardEntity p, HttpSession hs) {
+		p.setUserPk(sUtils.getLoginUserPk(hs));
+		service.updBoard(p);
+		return "redirect:/board/detail?boardPk=" + p.getBoardPk();
+	}
 }

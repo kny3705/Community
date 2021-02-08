@@ -6,7 +6,9 @@
 </div>
 <c:if test="${sessionScope.loginUser.userPk == requestScope.data.userPk}">
 	<div>
+		<a href="/board/edit?boardPk=${requestScope.data.boardPk}&category=${requestScope.data.category}">
 		<button>수정</button>
+		</a>
 		<button id="delBtn">삭제</button>
 	</div>
 </c:if>
