@@ -27,8 +27,8 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach items="${list}" var="item">
-				<tr>
+			<c:forEach items="${requestScope.list}" var="item">
+				<tr class="list-item" data-pk="${item.boardPk}">
 					<td>${item.seq}</td>
 					<td>${item.title}</td>
 					<td>${item.hits}</td>
@@ -44,3 +44,4 @@
 <div>
 	페이징
 </div>
+<script src="/res/js/board/list.js"></script>
