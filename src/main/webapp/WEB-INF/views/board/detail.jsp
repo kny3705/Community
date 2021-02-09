@@ -31,4 +31,6 @@
 	</form>
 </c:if>
 
+<div id="cmtList"></div>
+
 <script src="/res/js/board/detail.js"></script>

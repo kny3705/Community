@@ -10,4 +10,12 @@
 		from t_board_cmt
 		where boardPk = #{boardPk}
 	</insert>
+	<select id="selCmtList" resultType="CmtDomain">
+		select A.*, B.nm as writerNm
+		from t_board_cmt A
+		left join t_user B
+		on A.writerPk = B.userPk
+		where A.boardPk = #{boardPk}
+		order by A.seq desc
+	</select>
 </mapper>
