@@ -14,7 +14,7 @@
 	</div>
 </c:if>
 
-<div id="data" data-pk="${requestScope.data.boardPk}" data-category="${requestScope.data.category}">
+<div id="data" data-loginuserpk="${sessionScope.loginUser.userPk}" data-pk="${requestScope.data.boardPk}" data-category="${requestScope.data.category}">
 	<div>글번호 : ${requestScope.data.seq}</div>
 	<div>조회수 : ${requestScope.data.hits}</div>
 	<div>제목 : <c:out value="${requestScope.data.title}"/></div>
@@ -29,6 +29,14 @@
 		<input type="text" name="ctnt">
 		<input type="button" name="btn" value="댓글등록">
 	</form>
+	
+	<div id="modal" class="hide">				
+		<div class="modal-content">
+			<span id="modClose">X</span>
+			<input type="text" id="modCtnt">
+			<input type="button" id="modBtn" value="수정">
+		</div>
+	</div>
 </c:if>
 
 <div id="cmtList"></div>

@@ -20,4 +20,12 @@ public class CmtService {
 	public List<CmtDomain> selCmtList(CmtEntity p) {
 		return mapper.selCmtList(p);
 	}
+	
+	public int updCmt(CmtEntity p) {
+		return mapper.updCmt(p);
+	}
+	
+	public int delCmt(CmtEntity p) {
+		return mapper.delCmt(p);
+	}
 }
