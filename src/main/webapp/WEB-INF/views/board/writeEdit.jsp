@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div>
-	<form action="/board/${reqeustScope.data == null ? 'write' : 'edit'}" method="post">
+	<form action="/board/${requestScope.data == null ? 'write' : 'edit'}" method="post">
 		<input type="hidden" name="category" value="${param.category}">
 		<input type="hidden" name="boardPk" value="${requestScope.data == null ? '0' : requestScope.data.boardPk}">
 		<div>
